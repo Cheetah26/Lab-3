@@ -5,4 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: tree
+      - uses: docker/login-action@v3
+        with:
+          username: cheetah26
+          password: ${{ secrets.DOCKER_HUB_PAT }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./web-server
+          tags: cheetah26/web-server:latest
+          push: true
