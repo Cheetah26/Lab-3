@@ -1,5 +1,16 @@
 name: Build Image
-on: push
+on:
+  workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: true
+    secrets:
+      docker_hub_token:
+        required: true
+    outputs:
+      image:
+        value: cheetah26/web-server:${{ inputs.tag }}
 jobs:
   build-image:
     runs-on: ubuntu-latest
@@ -8,9 +19,9 @@ jobs:
       - uses: docker/login-action@v3
         with:
           username: cheetah26
-          password: ${{ secrets.DOCKER_HUB_PAT }}
+          password: ${{ secrets.docker_hub_token }}
       - uses: docker/build-push-action@v6
         with:
           context: ./web-server
-          tags: cheetah26/web-server:latest
+          tags: cheetah26/web-server:${{ inputs.tag }}
           push: true

@@ -1,0 +1,9 @@
+name: Latest
+on: push
+jobs:
+  build-image:
+    uses: ./.github/workflows/build-image.yml
+    with:
+      tag: latest
+    secrets:
+      docker_hub_token: ${{ secrets.DOCKER_HUB_PAT }}
