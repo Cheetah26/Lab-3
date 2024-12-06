@@ -24,10 +24,10 @@ func main() {
 		w.Write([]byte(defaultMessage))
 	})
 
-	// http.HandleFunc("/echo/{message}", func(w http.ResponseWriter, r *http.Request) {
-	// 	response := "Echo: " + r.PathValue("message")
-	// 	w.Write([]byte(response))
-	// })
+	http.HandleFunc("/echo/{message}", func(w http.ResponseWriter, r *http.Request) {
+		response := "Echo: " + r.PathValue("message")
+		w.Write([]byte(response))
+	})
 
 	logger.Println("Listening on " + addr)
 	logger.Fatal(http.ListenAndServe(addr, nil))
