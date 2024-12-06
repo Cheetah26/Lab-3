@@ -1,0 +1,27 @@
+name: Deploy GCP
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        type: string
+        required: true
+      image:
+        type: string
+        required: true
+    secrets:
+      gcp_key:
+        required: true
+jobs:
+  deploy-gcp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.gcp_key }}
+      - uses: google-github-actions/deploy-cloudrun@v2
+        id: deploy
+        with:
+          service: ${{ inputs.service-name }}
+          image: ${{ inputs.image }}
+          flags: --allow-unauthenticated
+      - run: "echo 'Live URL: ${{ steps.deploy.outputs.url }}' >> $GITHUB_STEP_SUMMARY"

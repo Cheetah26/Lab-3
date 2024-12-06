@@ -10,3 +10,11 @@ jobs:
       tag: ${{ github.ref_name }}
     secrets:
       docker_hub_token: ${{ secrets.DOCKER_HUB_PAT }}
+  deploy-gcp:
+    needs: build-image
+    uses: ./.github/workflows/deploy-gcp.yml
+    with:
+      service-name: web-server
+      image: ${{ needs.build-image.outputs.image }}
+    secrets:
+      gcp_key: ${{ secrets.GCP_KEY }}
